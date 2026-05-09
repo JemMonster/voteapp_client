@@ -8,30 +8,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.voteapp.domain.model.Voting
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.voteapp.presentation.components.VotingCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedScreen(navController: NavController) {
-    val votings = remember {
-        listOf(
-            Voting(
-                id = "1",
-                title = "Лучший язык программирования 2026",
-                description = "Голосуйте за ваш любимый язык программирования в этом году",
-                type = VotingType.SINGLE,
-                status = VotingStatus.ACTIVE,
-                endsAt = System.currentTimeMillis() + 1000000,
-                options = listOf(
-                    VotingOption("1", "TypeScript", 45),
-                    VotingOption("2", "Python", 38)
-                )
-            )
-        )
-    }
-    
+fun FeedScreen(
+    navController: NavController,
+    viewModel: FeedViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Лента") })
@@ -47,15 +36,42 @@ fun FeedScreen(navController: NavController) {
             }
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(votings) { voting ->
-                VotingCard(voting = voting)
+
+        when (val s = state) {
+            FeedState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is FeedState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Ошибка: ${s.message}")
+                }
+            }
+
+            is FeedState.Success -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(s.votings) { voting ->
+                        VotingCard(voting = voting)
+                    }
+                }
             }
         }
     }
