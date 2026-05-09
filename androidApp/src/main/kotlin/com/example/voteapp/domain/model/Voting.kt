@@ -1,5 +1,8 @@
 package com.example.voteapp.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Voting(
     val id: String,
     val title: String,
@@ -13,10 +16,12 @@ data class Voting(
     val options: List<VotingOption> = emptyList()
 )
 
+@Serializable
 enum class VotingType {
     SINGLE, MULTIPLE, PETITION, RAFFLE
 }
 
+@Serializable
 enum class VotingStatus {
     ACTIVE, CLOSED
 }
@@ -24,6 +29,7 @@ enum class VotingStatus {
 data class VotingOption(
     val id: String,
     val text: String,
-    val votes: Int
+    val votes: Int,
 )
+
 
