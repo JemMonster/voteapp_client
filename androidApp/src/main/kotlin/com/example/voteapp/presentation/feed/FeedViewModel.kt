@@ -2,8 +2,9 @@ package com.example.voteapp.presentation.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.voteapp.data.api.ApiService
 import com.example.voteapp.domain.model.Voting
+import com.example.voteapp.domain.usecase.GetVotingsUseCase
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val apiService: ApiService
+    private val getVotingsUseCase: GetVotingsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<FeedState>(FeedState.Loading)
@@ -27,7 +28,7 @@ class FeedViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = FeedState.Loading
             runCatching {
-                apiService.getVotings()
+                getVotingsUseCase()
             }.onSuccess { votings ->
                 _state.value = FeedState.Success(votings)
             }.onFailure {
