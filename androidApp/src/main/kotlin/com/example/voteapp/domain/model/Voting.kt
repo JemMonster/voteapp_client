@@ -32,4 +32,7 @@ data class VotingOption(
     val votes: Int,
 )
 
+// For now, VotingOption votes is used both for detail & results visualization.
+
+
 

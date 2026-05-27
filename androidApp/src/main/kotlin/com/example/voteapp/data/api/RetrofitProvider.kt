@@ -49,9 +49,10 @@ object RetrofitProvider {
             .build()
     }
 
-    @Provides
+@Provides
     @Singleton
     fun provideVotingsClient(retrofit: Retrofit): RetrofitVotingsClient =
         retrofit.create()
+
 }
 

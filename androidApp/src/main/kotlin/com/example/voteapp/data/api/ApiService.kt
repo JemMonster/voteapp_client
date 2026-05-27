@@ -1,10 +1,34 @@
 package com.example.voteapp.data.api
 
 import com.example.voteapp.domain.model.Voting
+import com.example.voteapp.domain.model.VotingResult
+import com.example.voteapp.domain.model.VotingType
+
 
 interface ApiService {
     suspend fun getVotings(): List<Voting>
+
+    suspend fun getVotingDetail(votingId: String): Voting
+
+    suspend fun getVotingHistory(): List<Voting>
+
+    suspend fun submitVote(votingId: String, optionId: Long?, optionIds: List<Long>?): VotingResult
+
+    suspend fun getVotingResults(votingId: String): VotingResult
+
+    suspend fun createVoting(
+        title: String,
+        description: String?,
+        imageUrl: String?,
+        type: VotingType,
+        startTime: String,
+        endTime: String,
+        options: List<String>,
+    ): String
+
+    suspend fun inviteToVoting(votingId: String, email: String): String
 }
+
 
 @Deprecated(
     message = "Use VotingRepository port (domain) + GetVotingsUseCase instead. ApiService is an HTTP-level adapter.",

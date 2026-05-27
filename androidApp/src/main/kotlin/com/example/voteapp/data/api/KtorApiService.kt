@@ -28,6 +28,37 @@ class KtorApiService @Inject constructor(
             )
         }
     }
+
+    override suspend fun getVotingDetail(votingId: String): Voting =
+        throw NotImplementedError("KtorApiService is not wired for this endpoint. Use RetrofitApiService instead.")
+
+    override suspend fun getVotingHistory(): List<Voting> =
+        throw NotImplementedError("KtorApiService is not wired for this endpoint. Use RetrofitApiService instead.")
+
+    override suspend fun submitVote(
+        votingId: String,
+        optionId: Long?,
+        optionIds: List<Long>?,
+    ): com.example.voteapp.domain.model.VotingResult =
+        throw NotImplementedError("KtorApiService is not wired for this endpoint. Use RetrofitApiService instead.")
+
+    override suspend fun getVotingResults(votingId: String): com.example.voteapp.domain.model.VotingResult =
+        throw NotImplementedError("KtorApiService is not wired for this endpoint. Use RetrofitApiService instead.")
+
+    override suspend fun createVoting(
+        title: String,
+        description: String?,
+        imageUrl: String?,
+        type: com.example.voteapp.domain.model.VotingType,
+        startTime: String,
+        endTime: String,
+        options: List<String>,
+    ): String =
+        throw NotImplementedError("KtorApiService is not wired for this endpoint. Use RetrofitApiService instead.")
+
+    override suspend fun inviteToVoting(votingId: String, email: String): String =
+        throw NotImplementedError("KtorApiService is not wired for this endpoint. Use RetrofitApiService instead.")
 }
+
 
 
