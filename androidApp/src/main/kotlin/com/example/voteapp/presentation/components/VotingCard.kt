@@ -11,8 +11,10 @@ import com.example.voteapp.domain.model.Voting
 @Composable
 fun VotingCard(
     voting: Voting,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
+    val clickableModifier = if (onClick != null) modifier.then(androidx.compose.foundation.clickable { onClick() }) else modifier
     Card(
         modifier = modifier.fillMaxWidth()
     ) {
