@@ -1,51 +1,20 @@
 package com.example.voteapp.di
 
-import com.example.voteapp.data.api.ApiService
-import com.example.voteapp.data.api.RetrofitApiService
-import com.google.firebase.auth.FirebaseAuth
-
-import com.example.voteapp.data.repository.VotingRepositoryImpl
-import com.example.voteapp.domain.port.VotingRepository
-import com.example.voteapp.domain.usecase.GetVotingsUseCase
-
-import com.example.voteapp.data.remote.VoteApiConfig
-
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
+/**
+ * Legacy module. Most dependencies are now provided by:
+ * - NetworkModule
+ * - RepositoryModule
+ * - UseCaseModule
+ *
+ * This module is kept for backwards compatibility.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
-
-    @Provides
-    @Singleton
-    fun provideVoteApiConfig(): VoteApiConfig = VoteApiConfig(
-        baseUrl = "http://192.168.0.100:8080" // замените при настройке окружения
-    )
-
-    @Provides
-    @Singleton
-    fun provideApiService(
-        retrofitApiService: RetrofitApiService,
-    ): ApiService = retrofitApiService
-
-
-
-    @Provides
-    @Singleton
-    fun provideVotingRepository(
-        apiService: ApiService,
-    ): VotingRepository = VotingRepositoryImpl(apiService)
-
-    @Provides
-    @Singleton
-    fun provideGetVotingsUseCase(
-        repository: VotingRepository,
-    ): GetVotingsUseCase = GetVotingsUseCase(repository)
-}
+object AppModule
 
 
 

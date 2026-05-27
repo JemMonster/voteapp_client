@@ -4,7 +4,6 @@ import com.example.voteapp.domain.model.Voting
 import com.example.voteapp.domain.model.VotingResult
 import com.example.voteapp.domain.model.VotingType
 
-
 interface ApiService {
     suspend fun getVotings(): List<Voting>
 
@@ -28,11 +27,5 @@ interface ApiService {
 
     suspend fun inviteToVoting(votingId: String, email: String): String
 }
-
-
-@Deprecated(
-    message = "Use VotingRepository port (domain) + GetVotingsUseCase instead. ApiService is an HTTP-level adapter.",
-    replaceWith = ReplaceWith("getVotings")
-)
 
 
