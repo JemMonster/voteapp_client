@@ -1,13 +1,15 @@
 package com.example.voteapp.di
 
 import com.example.voteapp.data.api.ApiService
-import com.example.voteapp.data.api.KtorApiService
+import com.example.voteapp.data.api.RetrofitApiService
+import com.google.firebase.auth.FirebaseAuth
+
 import com.example.voteapp.data.repository.VotingRepositoryImpl
 import com.example.voteapp.domain.port.VotingRepository
 import com.example.voteapp.domain.usecase.GetVotingsUseCase
 
-import com.example.voteapp.data.remote.HttpClientFactory
 import com.example.voteapp.data.remote.VoteApiConfig
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,14 +28,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(config: VoteApiConfig): io.ktor.client.HttpClient =
-        HttpClientFactory.create(config.baseUrl)
-
-    @Provides
-    @Singleton
     fun provideApiService(
-        httpClient: io.ktor.client.HttpClient,
-    ): ApiService = KtorApiService(httpClient)
+        retrofitApiService: RetrofitApiService,
+    ): ApiService = retrofitApiService
+
 
 
     @Provides

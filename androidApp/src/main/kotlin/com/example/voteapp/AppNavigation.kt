@@ -10,9 +10,9 @@ import androidx.navigation.compose.NavHostController
 fun AppNavigation(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = "signin") {
         composable("signin") { SignInScreen(navController) }
+        composable("signup") { SignUpScreen(navController) }
         composable("feed") { FeedScreen(navController) }
-        // Add more screens...
     }
-
 }
+
 

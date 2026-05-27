@@ -9,13 +9,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.voteapp.presentation.signin.SignInUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen(
+fun SignUpScreen(
     navController: NavController,
-    viewModel: SignInViewModel = hiltViewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -27,7 +26,7 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Вход",
+            text = "Регистрация",
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -65,7 +64,7 @@ fun SignInScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = viewModel::signIn,
+            onClick = viewModel::signUp,
             modifier = Modifier.fillMaxWidth(),
             enabled = !state.isLoading,
         ) {
@@ -75,18 +74,18 @@ fun SignInScreen(
                     color = MaterialTheme.colorScheme.onPrimary,
                 )
             } else {
-                Text("Войти")
+                Text("Создать аккаунт")
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
-            onClick = { navController.navigate("signup") },
+            onClick = { navController.navigate("signin") },
             modifier = Modifier.fillMaxWidth(),
             enabled = !state.isLoading,
         ) {
-            Text("Нет аккаунта? Регистрация")
+            Text("У меня есть аккаунт")
         }
     }
 
