@@ -1,89 +1,130 @@
-# Vote App — Android Client
+﻿<h1 align="center">🗳️ Vote App</h1>
 
-> Клиент мобильного приложения для голосований.
+<p align="center">
+  <strong>Android-приложение для создания и проведения голосований.</strong>
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/>
   <img src="https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white"/>
   <img src="https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Firebase-Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"/>
   <img src="https://img.shields.io/badge/DI-Hilt-E91E63?style=for-the-badge&logo=google&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Network-Ktor-2E7D32?style=for-the-badge&logo=ktor&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Auth-Firebase%20Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"/>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Architecture-Clean%20Architecture-orange?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Min%20SDK-26-blue?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Target%20SDK-35-blue?style=flat-square"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
 </p>
 
 ---
 
-## Что реализовано сейчас (курсовая версия)
-- Экран **Sign in**: `signin`
-- Экран **Лента голосований**: `feed`
-- Архитектура: Clean Architecture (UI → ViewModel → UseCase → Repository)
-- DI: Hilt
-- Состояние: `StateFlow`
+## О проекте
 
-> Примечание: текущая авторизация на `SignInScreen` — временная заглушка (пока нет полного Firebase Auth flow).
+**Vote App** — клиентская часть мобильного приложения для создания и проведения голосований. Приложение взаимодействует с REST API сервером, обеспечивает авторизацию через Firebase, создание различных типов голосований, участие в них и просмотр результатов.
+
+---
+
+## Функциональность
+
+| Модуль | Описание |
+|--------|----------|
+| **Авторизация** | Firebase Auth (email + password), автоматическое определение сессии при запуске |
+| **SignIn** | Экран входа в систему с валидацией ввода |
+| **SignUp** | Экран регистрации нового пользователя |
+| **Лента голосований** | Список активных голосований с возможностью быстрого доступа |
+| **Детали голосования** | Просмотр информации о голосовании, участие в голосовании |
+| **Создание голосования** | Формирование нового голосования с настройкой типа, опций и сроков |
+| **Профиль** | Личный кабинет пользователя с информацией о профиле |
+| **История голосований** | Список завершенных голосований с результатами |
+| **Уведомления** | WorkManager-напоминания о голосованиях |
 
 ---
 
 ## Архитектура
 
-### Clean Architecture (client)
-```text
+```
 presentation/
-  screens/        ← Jetpack Compose UI
-  viewmodel/      ← ViewModel + StateFlow ui-state
+├── screens/          ← Jetpack Compose UI (экраны)
+├── viewmodel/        ← ViewModel + StateFlow
+└── navigation/       ← NavHost + навигация между экранами
 
 domain/
-  usecase/        ← UseCases
-  model/          ← domain-модели
-  port/           ← repository interfaces
+├── usecase/          ← UseCases (бизнес-логика)
+├── model/            ← доменные модели
+└── port/             ← repository interfaces (ports)
 
 data/
-  api/            ← HTTP adapter (DTO + сетевые вызовы через Ktor)
-  repository/     ← Repository implementations
-  remote/         ← baseUrl/HTTP client factory
+├── api/              ← Retrofit интерфейс + DTO-модели
+├── repository/       ← Реализации репозиториев
+└── remote/           ← baseUrl/HTTP client factory
 
-di/
-  AppModule.kt    ← Hilt composition root
+di/                   ← Hilt модули
 ```
 
----
-
-## Поток данных
-1. UI вызывает действие в ViewModel.
-2. ViewModel вызывает UseCase.
-3. UseCase обращается к Repository (порт).
-4. Repository обращается к HTTP (data/api) и маппит DTO → domain model.
-5. ViewModel обновляет `StateFlow` для UI.
+**Паттерн:** Clean Architecture (MVVM)  
+**DI:** Hilt (SingletonComponent)  
+**Навигация:** Navigation Compose — auth → main, внутри main — экранный стек
 
 ---
 
 ## Стек технологий
-- Kotlin 1.9+
-- Android
-  - Jetpack Compose
-  - Material 3
-  - Navigation Compose
-- DI: Dagger Hilt
-- Coroutines + StateFlow
-- Сеть: Ktor Client
-  - kotlinx.serialization
-  - ContentNegotiation
+
+| Категория | Библиотека / Инструмент |
+|-----------|------------------------|
+| Язык | Kotlin 1.9 |
+| UI | Jetpack Compose + Material 3 |
+| Навигация | Navigation Compose |
+| DI | Dagger Hilt 2.51 |
+| Сеть | Retrofit 2 + OkHttp |
+| Сериализация | kotlinx.serialization |
+| Auth | Firebase Authentication |
+| Фоновые задачи | WorkManager |
+| Архитектура | Clean Architecture, MVVM, StateFlow, Coroutines |
+| Сборка | Gradle Kotlin DSL |
+| Тестирование | JUnit 4, Mockk |
+
+---
+
+## Тесты
+
+```bash
+./gradlew :androidApp:testDebugUnitTest
+```
+
+| Тест | Покрытие |
+|------|----------|
+| `CreateVotingUseCaseTest` | Логика создания голосования |
+| `GetVotingDetailUseCaseTest` | Получение деталей голосования |
+| `SubmitVoteUseCaseTest` | Логика отправки голоса |
+| `GetVotingHistoryUseCaseTest` | Получение истории голосований |
 
 ---
 
 ## Запуск
+
 ### Android
-1) Откройте проект: `kotlin/client/androidApp`
-2) Убедитесь, что файл `google-services.json` подключён (лежит в `androidApp/`)
-3) Запустите приложение через Android Studio.
+1. Откройте проект: `kotlin/client/androidApp`
+2. Убедитесь, что файл `google-services.json` подключен (лежит в `androidApp/`)
+3. Запустите приложение через Android Studio.
 
 ---
 
 ## Конфигурация окружения
+
 - `VoteApiConfig.baseUrl` задаётся в `kotlin/client/androidApp/.../di/AppModule.kt`
-  - сейчас: `http://192.168.0.100:8080`
+  - текущее значение: `http://192.168.0.100:8080`
 
 ---
 
-## Roadmap (что ещё нужно до уровня reference)
-См. `TODO.md` в корне проекта.
+## Связанные репозитории
+
+> Серверная часть (REST API) разрабатывается отдельно. Клиент ожидает API по схеме, описанной в соответствующих API-интерфейсах.
+
+---
+
+## Лицензия
+
+Распространяется под лицензией **MIT**. Подробнее см. [LICENSE](LICENSE).
