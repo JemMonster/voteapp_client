@@ -1,14 +1,12 @@
 package com.example.voteapp.data.api
 
-import com.example.voteapp.domain.model.VotingStatus
-import com.example.voteapp.domain.model.VotingType
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class VotingResultResponseDto(
     val votingId: String,
-    val status: VotingStatus,
-    val type: VotingType,
+    val status: VotingStatusDto,
+    val type: VotingTypeDto,
     val totalParticipants: Int,
     val optionsResults: List<OptionResultDto>? = null,
     val signaturesCount: Int? = null,

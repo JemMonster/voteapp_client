@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class VoteRequestDto(
-    val optionId: Long? = null,
-    val optionIds: List<Long>? = null,
+    val selectedOptionIds: List<String> = emptyList(),
+    val isParticipating: Boolean = true,
 )
 

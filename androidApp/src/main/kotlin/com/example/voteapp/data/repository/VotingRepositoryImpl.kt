@@ -1,10 +1,8 @@
 package com.example.voteapp.data.repository
 
 import com.example.voteapp.data.api.ApiService
-import com.example.voteapp.domain.model.Voting
-import com.example.voteapp.domain.model.VotingResult
-import com.example.voteapp.domain.model.VotingType
-
+import com.example.voteapp.data.mapper.toDomain
+import com.example.voteapp.data.mapper.toDomainList
 import com.example.voteapp.domain.port.VotingRepository
 import javax.inject.Inject
 
@@ -12,34 +10,46 @@ import javax.inject.Inject
 class VotingRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : VotingRepository {
-    override suspend fun getVotings(): List<Voting> = apiService.getVotings()
+    
+    override suspend fun getVotings(): List<com.example.voteapp.domain.model.Voting> {
+        val response = apiService.getVotings()
+        return response.items.map { it.toDomain() }
+    }
 
-    override suspend fun getVotingDetail(votingId: String): Voting =
-        apiService.getVotingDetail(votingId)
+    override suspend fun getVotingDetail(votingId: String): com.example.voteapp.domain.model.Voting {
+        val response = apiService.getVotingDetail(votingId)
+        return response.toDomain()
+    }
 
-    override suspend fun getVotingHistory(): List<Voting> =
-        apiService.getVotingHistory()
+    override suspend fun getVotingHistory(): List<com.example.voteapp.domain.model.Voting> {
+        val response = apiService.getVotingHistory()
+        return response.toDomainList()
+    }
 
     override suspend fun submitVote(
         votingId: String,
         optionId: Long?,
         optionIds: List<Long>?,
-    ): VotingResult =
-        apiService.submitVote(votingId = votingId, optionId = optionId, optionIds = optionIds)
+    ): com.example.voteapp.domain.model.VotingResult {
+        val response = apiService.submitVote(votingId, optionId, optionIds)
+        return response.toDomain()
+    }
 
-    override suspend fun getVotingResults(votingId: String): VotingResult =
-        apiService.getVotingResults(votingId)
+    override suspend fun getVotingResults(votingId: String): com.example.voteapp.domain.model.VotingResult {
+        val response = apiService.getVotingResults(votingId)
+        return response.toDomain()
+    }
 
     override suspend fun createVoting(
         title: String,
         description: String?,
         imageUrl: String?,
-        type: VotingType,
+        type: com.example.voteapp.domain.model.VotingType,
         startTime: String,
         endTime: String,
         options: List<String>,
-    ): String =
-        apiService.createVoting(
+    ): String {
+        val response = apiService.createVoting(
             title = title,
             description = description,
             imageUrl = imageUrl,
@@ -48,9 +58,13 @@ class VotingRepositoryImpl @Inject constructor(
             endTime = endTime,
             options = options,
         )
+        return response.toDomain()
+    }
 
-    override suspend fun inviteToVoting(votingId: String, email: String): String =
-        apiService.inviteToVoting(votingId, email)
+    override suspend fun inviteToVoting(votingId: String, email: String): String {
+        val response = apiService.inviteToVoting(votingId, email)
+        return response.toDomain()
+    }
 }
 
 
