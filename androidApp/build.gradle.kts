@@ -89,6 +89,19 @@ dependencies {
     // Other
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
+    // Hilt integration for WorkManager
+    implementation("androidx.hilt:hilt-work:1.2.0")
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+    testImplementation("io.mockk:mockk:1.13.12")
+    testImplementation("io.mockk:mockk-agent:1.13.12")
+
 }
 
 hilt {
