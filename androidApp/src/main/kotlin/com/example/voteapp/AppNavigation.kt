@@ -9,6 +9,7 @@ import com.example.voteapp.presentation.createvoting.CreateVotingScreen
 import com.example.voteapp.presentation.feed.FeedScreen
 import com.example.voteapp.presentation.history.VotingHistoryScreen
 import com.example.voteapp.presentation.profile.ProfileScreen
+import com.example.voteapp.presentation.search.SearchScreen
 import com.example.voteapp.presentation.signin.SignInScreen
 import com.example.voteapp.presentation.signin.SignUpScreen
 import com.example.voteapp.presentation.votingdetail.VotingDetailScreen
@@ -20,6 +21,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
         composable("signup") { SignUpScreen(navController) }
 
         composable("feed") { FeedScreen(navController) }
+        composable("search") { SearchScreen(navController) }
         composable("createVoting") { CreateVotingScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("history") { VotingHistoryScreen(navController) }
